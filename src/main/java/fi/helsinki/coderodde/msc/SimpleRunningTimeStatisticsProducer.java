@@ -4,7 +4,7 @@ import java.util.List;
 
 class SimpleRunningTimeStatisticsProducer {
 
-    public void run(final List<DataSet> dataSetList) {
+    void run(final List<DataSet> dataSetList) {
         System.out.println("<<< SimpleRunningTimeStatisticsProducer >>>");
         
         final RunningTime runningTime = new SimpleRunningTime();

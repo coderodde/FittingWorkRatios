@@ -9,6 +9,11 @@ import org.apache.commons.math3.fitting.WeightedObservedPoints;
  * polynomial of order two ({@code aH^2 + bH + c}).
  */
 class FittingCurve {
+    
+    // Fitter for polynomials of degree 2:
+    private static final PolynomialCurveFitter FITTER = 
+            PolynomialCurveFitter.create(2);
+    
     private final double a;
     private final double b;
     private final double c;
@@ -25,11 +30,13 @@ class FittingCurve {
     }
     
     double mean() {
-        return a / 3.0 + b / 2.0 + c;
+        return (a / 3.0) + (b / 2.0) + c;
     }
     
     double std() {
-        double x = 4 * a * a / 45.0 + a * b / 6.0 + b * b / 12.0;
+        double x = (4 * a * a / 45.0) + 
+                   (a * b / 6.0) + 
+                   (b * b / 12.0);
         
         return Math.sqrt(x);
     }
@@ -56,7 +63,7 @@ class FittingCurve {
             distanceSum += abs(p - workRatio);
         }
         
-        return distanceSum / dataSet.getFingers();
+        return distanceSum / dataSet.size();
     }
     
     static FittingCurve inferFittingCurve(final DataSet dataSet,
@@ -66,21 +73,22 @@ class FittingCurve {
         
         for (int i = 0; i < dataSet.size(); i++) {
             final DataLine dataLine = dataSet.get(i);
-            wop.add(dataLine.getEntropy(),
+            final double r = 
                     convertDataLineToWorkRatio(
                             dataLine, 
                             runningTime, 
-                            dataSet.getFingers()));
+                            dataSet.getNumberOfFingers());
+                
+            wop.add(dataLine.getEntropy(), r);
         }
         
         // Parabola curve fitter:
-        final PolynomialCurveFitter pcf = PolynomialCurveFitter.create(2);
-        final double[] coefficients = pcf.fit(wop.toList());
+        final double[] coefficients = FITTER.fit(wop.toList());
         
         return new FittingCurve(coefficients[2],
                                 coefficients[1],
                                 coefficients[0],
-                                dataSet.getFingers());
+                                dataSet.getNumberOfFingers());
     }
     
     private static double 

@@ -2,6 +2,7 @@ fi\helsinki\coderodde\msc\FittingCurve.class
 fi\helsinki\coderodde\msc\SimpleRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\SimpleRunningTime.class
 fi\helsinki\coderodde\msc\DataLine.class
+fi\helsinki\coderodde\msc\SemiVerboseRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\SemiVerboseRunningTime.class
 fi\helsinki\coderodde\msc\VerboseRunningTime.class
 fi\helsinki\coderodde\msc\DataSet.class

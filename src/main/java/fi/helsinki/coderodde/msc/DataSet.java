@@ -28,7 +28,7 @@ class DataSet {
         return dataLines.size();
     }
     
-    int getFingers() {
+    int getNumberOfFingers() {
         return fingers;
     }
     
