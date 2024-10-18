@@ -3,8 +3,7 @@ package fi.helsinki.coderodde.msc;
 class SimpleRunningTime implements RunningTime {
 
     @Override
-    public double estimate(double entropy, double fingers) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public double estimate(double entropy, int fingers) {
+        return Math.pow((double) fingers, 2.0 - entropy);
     }
-    
 }
