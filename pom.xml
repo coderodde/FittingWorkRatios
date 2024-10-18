@@ -5,9 +5,18 @@
     <artifactId>FittingWorkRatios.java</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>20</maven.compiler.release>
         <exec.mainClass>fi.helsinki.coderodde.msc.FittingWorkRatios</exec.mainClass>
     </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,4 +1,5 @@
 fi\helsinki\coderodde\msc\FittingCurve.class
+fi\helsinki\coderodde\msc\SimpleRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\SimpleRunningTime.class
 fi\helsinki\coderodde\msc\DataLine.class
 fi\helsinki\coderodde\msc\SemiVerboseRunningTime.class

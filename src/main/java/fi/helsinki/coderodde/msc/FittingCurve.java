@@ -1,6 +1,8 @@
 package fi.helsinki.coderodde.msc;
 
 import static java.lang.Math.abs;
+import org.apache.commons.math3.fitting.PolynomialCurveFitter;
+import org.apache.commons.math3.fitting.WeightedObservedPoints;
 
 /**
  * This class implements the fitting curve for the entropy data that is a 
@@ -43,14 +45,51 @@ class FittingCurve {
         
         for (int i = 0; i < dataSet.size(); i++) {
             final DataLine dataLine = dataSet.get(i);
-            final double work = dataLine.getWork();
             final double entropy = dataLine.getEntropy();
-            final double workRatio = work / runningTime.estimate(entropy, 
-                                                                 fingers);
+            final double workRatio = 
+                    convertDataLineToWorkRatio(
+                            dataLine, 
+                            runningTime, 
+                            fingers);
+            
             final double p = evaluate(entropy);
             distanceSum += abs(p - workRatio);
         }
         
         return distanceSum / dataSet.getFingers();
+    }
+    
+    static FittingCurve inferFittingCurve(final DataSet dataSet,
+                                          final RunningTime runningTime) {
+        
+        final WeightedObservedPoints wop = new WeightedObservedPoints();
+        
+        for (int i = 0; i < dataSet.size(); i++) {
+            final DataLine dataLine = dataSet.get(i);
+            wop.add(dataLine.getEntropy(),
+                    convertDataLineToWorkRatio(
+                            dataLine, 
+                            runningTime, 
+                            dataSet.getFingers()));
+        }
+        
+        // Parabola curve fitter:
+        final PolynomialCurveFitter pcf = PolynomialCurveFitter.create(2);
+        final double[] coefficients = pcf.fit(wop.toList());
+        
+        return new FittingCurve(coefficients[2],
+                                coefficients[1],
+                                coefficients[0],
+                                dataSet.getFingers());
+    }
+    
+    private static double 
+        convertDataLineToWorkRatio(final DataLine dataLine, 
+                                   final RunningTime runningTime,
+                                   final int fingers) {
+            
+        final double work = dataLine.getWork();
+        final double entropy = dataLine.getEntropy();
+        return work / runningTime.estimate(entropy, fingers);
     }
 }
