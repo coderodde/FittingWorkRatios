@@ -60,7 +60,7 @@ class VerboseRunningTimeStatisticsProducer {
                 }
             }
             
-            System.out.printf("Data set %3d:\n", dataSetNumber++);
+            System.out.printf("Data set %3d:\n", dataSetNumber);
             
             System.out.printf("    Closest mean = %f,\n", closestMean);
             System.out.printf("    Closest mean rho = %f,\n", 
@@ -77,13 +77,15 @@ class VerboseRunningTimeStatisticsProducer {
             meanMap.get(closestMeanRho).add(dataSetNumber);
             stdMap .get(smallestStdRho).add(dataSetNumber);
             distMap.get(smallestDstRho).add(dataSetNumber);
+            
+            dataSetNumber++;
         }
         
         System.out.println();
         System.out.println("Means:");
         
         for (final Map.Entry<Double, List<Integer>> e : meanMap.entrySet()) {
-            System.out.printf("    rho = %.3f, indices[%3d] = %s\n", 
+            System.out.printf("    rho = %.3f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -93,7 +95,7 @@ class VerboseRunningTimeStatisticsProducer {
         System.out.println("Stds:");
         
         for (final Map.Entry<Double, List<Integer>> e : stdMap.entrySet()) {
-            System.out.printf("    rho = %.3f, indices[%3d] = %s\n", 
+            System.out.printf("    rho = %.3f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -103,7 +105,7 @@ class VerboseRunningTimeStatisticsProducer {
         System.out.println("Distances:");
         
         for (final Map.Entry<Double, List<Integer>> e : distMap.entrySet()) {
-            System.out.printf("    rho = %.3f, indices[%3d] = %s\n", 
+            System.out.printf("    rho = %.3f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());

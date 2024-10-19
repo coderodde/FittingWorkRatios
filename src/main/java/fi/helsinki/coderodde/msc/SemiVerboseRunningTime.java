@@ -18,7 +18,7 @@ class SemiVerboseRunningTime implements RunningTime {
         final double p = 
                 2.0 
                 - entropy 
-                + log(1.0 + gamma * pow(cos(PI * entropy), 2.0)) /
+                + log(1.0 - gamma * pow(cos(PI * entropy), 2.0)) /
                   log(fingers);
         
         return pow(fingers, p);
