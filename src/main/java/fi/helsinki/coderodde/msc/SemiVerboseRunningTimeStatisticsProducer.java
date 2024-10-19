@@ -32,7 +32,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
                 double std  = fittingCurve.std();
                 double dist = fittingCurve.averageDistance(dataSet,
                                                            runningTime);
-                System.out.println("dist = " + dist);
+
                 if (abs(closestMean - 1.0) > abs(mean - 1.0)) {
                     closestMean = mean;
                     closestMeanGamma = gamma;
@@ -49,7 +49,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
                 }
             }
             
-            System.out.printf("Data set %-3d:\n", dataSetNumber++);
+            System.out.printf("Data set %3d:\n", dataSetNumber++);
             
             System.out.printf("    Closest mean = %f,\n", closestMean);
             System.out.printf("    Closest mean gamma = %f,\n", 

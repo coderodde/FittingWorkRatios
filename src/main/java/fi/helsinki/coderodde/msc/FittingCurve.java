@@ -59,6 +59,8 @@ class FittingCurve {
                             runningTime, 
                             fingers);
             
+            //System.out.println("[" + entropy + ", " + workRatio + ", " + evaluate(entropy) + "]");
+            
             final double p = evaluate(entropy);
             distanceSum += abs(p - workRatio);
         }
