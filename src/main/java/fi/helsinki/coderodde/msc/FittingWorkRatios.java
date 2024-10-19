@@ -1,9 +1,6 @@
 package fi.helsinki.coderodde.msc;
 
-import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.math3.fitting.PolynomialCurveFitter;
-import org.apache.commons.math3.fitting.WeightedObservedPoints;
 
 /**
  * This program is used for fitting with parabola the work ratio plots.
@@ -26,5 +23,6 @@ public class FittingWorkRatios {
         
         new SimpleRunningTimeStatisticsProducer().run(dataSets);
         new SemiVerboseRunningTimeStatisticsProducer().run(dataSets);
+        new VerboseRunningTimeStatisticsProducer().run(dataSets);
     }
 }
