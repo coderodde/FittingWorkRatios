@@ -19,14 +19,19 @@ class FittingCurve {
     private final double c;
     private final int fingers;
     
-    FittingCurve(final double a,
-                 final double b,
-                 final double c,
-                 final int fingers) {
+    private FittingCurve(final double a,
+                         final double b,
+                         final double c,
+                         final int fingers) {
         this.a = a;
         this.b = b;
         this.c = c;
         this.fingers = fingers;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("%f H^2 + (%f)H + (%f)", a, b, c);
     }
     
     double mean() {

@@ -1,7 +1,10 @@
 package fi.helsinki.coderodde.msc;
 
 import static java.lang.Math.abs;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 class SemiVerboseRunningTimeStatisticsProducer {
     
@@ -9,6 +12,15 @@ class SemiVerboseRunningTimeStatisticsProducer {
         System.out.println("<<< SemiVerboseRunningTimeStatisticsProducer >>>");
         
         int dataSetNumber = 1;
+        final Map<Double, List<Integer>> meanMap = new TreeMap<>();
+        final Map<Double, List<Integer>> stdMap  = new TreeMap<>();
+        final Map<Double, List<Integer>> distMap = new TreeMap<>();
+        
+        for (double gamma = 0.0; gamma < 1.0; gamma += 0.01) {
+            meanMap.put(gamma, new ArrayList<>());
+            stdMap .put(gamma, new ArrayList<>());
+            distMap.put(gamma, new ArrayList<>());
+        }
         
         for (final DataSet dataSet : dataSetList) {
             double closestMean = Double.POSITIVE_INFINITY;
@@ -62,6 +74,40 @@ class SemiVerboseRunningTimeStatisticsProducer {
             System.out.printf("    Smallest distance = %f,\n", smallestDst);
             System.out.printf("    Smallest distance gamma = %f,\n\n", 
                               smallestDstGamma);
+            
+            meanMap.get(closestMeanGamma).add(dataSetNumber);
+            stdMap .get(smallestStdGamma).add(dataSetNumber);
+            distMap.get(smallestDstGamma).add(dataSetNumber);
+        }
+        
+        System.out.println();
+        System.out.println("Means:");
+        
+        for (final Map.Entry<Double, List<Integer>> e : meanMap.entrySet()) {
+            System.out.printf("    rho = %.3f, indices[%3d] = %s\n", 
+                              e.getKey(), 
+                              e.getValue().size(),
+                              e.getValue());
+        }
+        
+        System.out.println();
+        System.out.println("Stds:");
+        
+        for (final Map.Entry<Double, List<Integer>> e : stdMap.entrySet()) {
+            System.out.printf("    rho = %.3f, indices[%3d] = %s\n", 
+                              e.getKey(), 
+                              e.getValue().size(),
+                              e.getValue());
+        }
+        
+        System.out.println();
+        System.out.println("Distances:");
+        
+        for (final Map.Entry<Double, List<Integer>> e : distMap.entrySet()) {
+            System.out.printf("    rho = %.3f, indices[%3d] = %s\n", 
+                              e.getKey(), 
+                              e.getValue().size(),
+                              e.getValue());
         }
     }
 }
