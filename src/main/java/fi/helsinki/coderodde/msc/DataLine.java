@@ -1,26 +1,32 @@
 package fi.helsinki.coderodde.msc;
 
-class DataLine {
+final class DataLine {
     private final double entropy;
-    private final double work;
+    private final double workRatio;
     
     DataLine(final double entropy, final double workRatio) {
         this.entropy = entropy;
-        this.work = workRatio;
+        this.workRatio = workRatio;
     }
     
     double getEntropy() {
         return entropy;
     }
     
-    double getWork() {
-        return work;
+    double getWorkRatio() {
+        return workRatio;
+    }
+    
+    DataLine normalize(final RunningTime runningTime,
+                       final int fingers) {
+        final double ratio = workRatio / runningTime.estimate(entropy, fingers);
+        return new DataLine(entropy, ratio);
     }
     
     @Override
     public String toString() {
         return String.format("%.4f %.4f", 
                              entropy, 
-                             work);
+                             workRatio);
     }
 }

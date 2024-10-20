@@ -50,22 +50,14 @@ class FittingCurve {
         return a * entropy * entropy + b * entropy + c;
     }
     
-    double averageDistance(final DataSet dataSet, 
-                           final RunningTime runningTime) {
+    double averageDistance(final DataSet dataSet) {
         
         double distanceSum = 0.0;
         
         for (int i = 0; i < dataSet.size(); i++) {
             final DataLine dataLine = dataSet.get(i);
             final double entropy = dataLine.getEntropy();
-            final double workRatio = 
-                    convertDataLineToWorkRatio(
-                            dataLine, 
-                            runningTime, 
-                            fingers);
-            
-            //System.out.println("[" + entropy + ", " + workRatio + ", " + evaluate(entropy) + "]");
-            
+            final double workRatio = dataLine.getWorkRatio();
             final double p = evaluate(entropy);
             distanceSum += abs(p - workRatio);
         }
@@ -73,20 +65,13 @@ class FittingCurve {
         return distanceSum / dataSet.size();
     }
     
-    static FittingCurve inferFittingCurve(final DataSet dataSet,
-                                          final RunningTime runningTime) {
+    static FittingCurve inferFittingCurve(final DataSet dataSet) {
         
         final WeightedObservedPoints wop = new WeightedObservedPoints();
         
         for (int i = 0; i < dataSet.size(); i++) {
             final DataLine dataLine = dataSet.get(i);
-            final double r = 
-                    convertDataLineToWorkRatio(
-                            dataLine, 
-                            runningTime, 
-                            dataSet.getNumberOfFingers());
-                
-            wop.add(dataLine.getEntropy(), r);
+            wop.add(dataLine.getEntropy(), dataLine.getWorkRatio());
         }
         
         // Parabola curve fitter:
@@ -103,7 +88,7 @@ class FittingCurve {
                                    final RunningTime runningTime,
                                    final int fingers) {
             
-        final double work = dataLine.getWork();
+        final double work = dataLine.getWorkRatio();
         final double entropy = dataLine.getEntropy();
         return work / runningTime.estimate(entropy, fingers);
     }

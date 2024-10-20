@@ -35,14 +35,11 @@ class VerboseRunningTimeStatisticsProducer {
                 final RunningTime runningTime = new VerboseRunningTime(rho);
                 
                 final FittingCurve fittingCurve = 
-                        FittingCurve.inferFittingCurve(
-                                dataSet, 
-                                runningTime);
+                        FittingCurve.inferFittingCurve(dataSet);
                 
                 double mean = fittingCurve.mean();
                 double std  = fittingCurve.std();
-                double dist = fittingCurve.averageDistance(dataSet,
-                                                           runningTime);
+                double dist = fittingCurve.averageDistance(dataSet);
 
                 if (abs(closestMean - 1.0) > abs(mean - 1.0)) {
                     closestMean = mean;

@@ -13,6 +13,19 @@ class DataSet {
         this.fingers = fingers;
     }
     
+    DataSet normalize(final RunningTime runningTime) {
+        final DataSet normalizedDataSet = new DataSet(fingers);
+        
+        for (final DataLine dataLine : dataLines) {
+            normalizedDataSet.addDataLine(
+                    dataLine.normalize(
+                            runningTime, 
+                            fingers));
+        }
+        
+        return normalizedDataSet;
+    }
+    
     void addDataLine(final DataLine dataLine) {
         dataLines.add(
                 Objects.requireNonNull(

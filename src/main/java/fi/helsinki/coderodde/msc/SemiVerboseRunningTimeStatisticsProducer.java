@@ -35,15 +35,15 @@ class SemiVerboseRunningTimeStatisticsProducer {
                 final RunningTime runningTime = 
                         new SemiVerboseRunningTime(gamma);
                 
+                final DataSet normalizedDataSet = 
+                        dataSet.normalize(runningTime);
+                
                 final FittingCurve fittingCurve = 
-                        FittingCurve.inferFittingCurve(
-                                dataSet, 
-                                runningTime);
+                        FittingCurve.inferFittingCurve(normalizedDataSet);
                 
                 double mean = fittingCurve.mean();
                 double std  = fittingCurve.std();
-                double dist = fittingCurve.averageDistance(dataSet,
-                                                           runningTime);
+                double dist = fittingCurve.averageDistance(normalizedDataSet);
 
                 if (abs(closestMean - 1.0) > abs(mean - 1.0)) {
                     closestMean = mean;
