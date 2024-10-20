@@ -45,6 +45,28 @@ class DataSet {
         return fingers;
     }
     
+    double mean() {
+        double sum = 0.0;
+        
+        for (final DataLine dataLine : dataLines) {
+            sum += dataLine.getWorkRatio();
+        }
+        
+        return sum / dataLines.size();
+    }
+    
+    double std() {
+        final double mean = mean();
+        double sum = 0.0;
+        
+        for (final DataLine dataLine : dataLines) {
+            final double term = dataLine.getWorkRatio() - mean;
+            sum += term * term;
+        }
+        
+        return Math.sqrt(sum / dataLines.size());
+    }
+    
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -55,6 +77,6 @@ class DataSet {
         }
         
         sb.append("\n");
-        return sb.toString();
+        return sb.toString().replaceAll(",", "\\.");
     }
 }

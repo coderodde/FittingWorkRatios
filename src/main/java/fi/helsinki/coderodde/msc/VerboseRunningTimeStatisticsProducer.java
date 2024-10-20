@@ -33,9 +33,11 @@ class VerboseRunningTimeStatisticsProducer {
             
             for (double rho = 0.0; rho < 10.0; rho += 0.1) {
                 final RunningTime runningTime = new VerboseRunningTime(rho);
+                final DataSet normalizedDataSet = 
+                        dataSet.normalize(runningTime);
                 
                 final FittingCurve fittingCurve = 
-                        FittingCurve.inferFittingCurve(dataSet);
+                        FittingCurve.inferFittingCurve(normalizedDataSet);
                 
                 double mean = fittingCurve.mean();
                 double std  = fittingCurve.std();

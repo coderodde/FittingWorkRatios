@@ -17,20 +17,29 @@ class SimpleRunningTimeStatisticsProducer {
             final FittingCurve fittingCurve = 
                     FittingCurve.inferFittingCurve(normalizedDataSet);
             
-            final double mean = fittingCurve.mean();
-            final double std  = fittingCurve.std();
-            final double dist = fittingCurve.averageDistance(normalizedDataSet);
+            final double curveMean = fittingCurve.mean();
+            final double curveStd  = fittingCurve.std();
+            final double curveDist = fittingCurve.averageDistance(  
+                                                    normalizedDataSet);
             
-            if (minimumDistance > dist) {
-                minimumDistance = dist;
+            final double dataSetMean = normalizedDataSet.mean();
+            final double dataSetStd  = normalizedDataSet.std();
+            
+            if (minimumDistance > curveDist) {
+                minimumDistance = curveDist;
                 minimumDistanceDataSetNumber = dataSetNumber;
             }
             
-            System.out.printf("Data set %-3d: mean = %f, std = %f, dist = %f.\n", 
-                              dataSetNumber++,
-                              mean,
-                              std,
-                              dist);
+            System.out.printf(
+                    "[Data set %-3d] curve: mean = %f, std = %f, dist = %f; " + 
+                    "data set: mean = %f, std = %f.\n", 
+                              dataSetNumber,
+                              curveMean,
+                              curveStd,
+                              curveDist,
+                              dataSetMean,
+                              dataSetStd);
+            dataSetNumber++;
         }
         
         System.out.printf("Minimum distance: %f, data set number: %d.\n",
@@ -44,17 +53,15 @@ class SimpleRunningTimeStatisticsProducer {
                         .normalize(runningTime);
         
         System.out.println("Best data set:");
-        
-        for (int i = 0; i < optimalDataSet.size(); i++) {
-            final DataLine dataLine = optimalDataSet.get(i);
-            System.out.println(dataLine);
-        }
+        System.out.println(optimalDataSet);
         
         final FittingCurve fittingCurve = 
                 FittingCurve.inferFittingCurve(optimalDataSet);
         
         System.out.printf("Average fitting curve distance: %s.\n",
                           fittingCurve.averageDistance(optimalDataSet));
+        
+        System.out.println("Fitting curve: " + fittingCurve);
         
         System.out.println();
     }
