@@ -21,7 +21,8 @@ public class FittingWorkRatios {
         
         final List<DataSet> dataSets = dataSetsParser.parse();
         
-        new SimpleRunningTimeStatisticsProducer().run(dataSets);
+//        new SimpleRunningTimeStatisticsProducer().run(dataSets);
+        new PartialRunningTimeStatisticsProducer().run(dataSets);
 //        new SemiVerboseRunningTimeStatisticsProducer().run(dataSets);
 //        new VerboseRunningTimeStatisticsProducer().run(dataSets);
     }

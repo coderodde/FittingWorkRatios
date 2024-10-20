@@ -25,7 +25,7 @@ final class DataLine {
     
     @Override
     public String toString() {
-        return String.format("%.4f %.4f", 
+        return String.format("%f %f", 
                              entropy, 
                              workRatio);
     }

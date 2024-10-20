@@ -84,7 +84,7 @@ class VerboseRunningTimeStatisticsProducer {
         System.out.println("Means:");
         
         for (final Map.Entry<Double, List<Integer>> e : meanMap.entrySet()) {
-            System.out.printf("    rho = %.3f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -94,7 +94,7 @@ class VerboseRunningTimeStatisticsProducer {
         System.out.println("Stds:");
         
         for (final Map.Entry<Double, List<Integer>> e : stdMap.entrySet()) {
-            System.out.printf("    rho = %.3f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -104,7 +104,7 @@ class VerboseRunningTimeStatisticsProducer {
         System.out.println("Distances:");
         
         for (final Map.Entry<Double, List<Integer>> e : distMap.entrySet()) {
-            System.out.printf("    rho = %.3f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());

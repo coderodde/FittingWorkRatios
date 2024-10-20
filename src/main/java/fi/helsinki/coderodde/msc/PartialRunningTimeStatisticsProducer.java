@@ -2,12 +2,12 @@ package fi.helsinki.coderodde.msc;
 
 import java.util.List;
 
-class SimpleRunningTimeStatisticsProducer {
-
+final class PartialRunningTimeStatisticsProducer {
+    
     void run(final List<DataSet> dataSetList) {
-        System.out.println("<<< SimpleRunningTimeStatisticsProducer >>>");
+        System.out.println("<<< PartialRunningTimeStatisticsProducer >>>");
         
-        final RunningTime runningTime = new SimpleRunningTime();
+        final RunningTime runningTime = new PartialRunningTime();
         int dataSetNumber = 1;
         double minimumDistance = Double.POSITIVE_INFINITY;
         int minimumDistanceDataSetNumber = Integer.MAX_VALUE;

@@ -54,8 +54,7 @@ class FittingCurve {
         
         double distanceSum = 0.0;
         
-        for (int i = 0; i < dataSet.size(); i++) {
-            final DataLine dataLine = dataSet.get(i);
+        for (final DataLine dataLine : dataSet) {
             final double entropy = dataLine.getEntropy();
             final double workRatio = dataLine.getWorkRatio();
             final double p = evaluate(entropy);
@@ -69,9 +68,9 @@ class FittingCurve {
         
         final WeightedObservedPoints wop = new WeightedObservedPoints();
         
-        for (int i = 0; i < dataSet.size(); i++) {
-            final DataLine dataLine = dataSet.get(i);
-            wop.add(dataLine.getEntropy(), dataLine.getWorkRatio());
+        for (final DataLine dataLine : dataSet) {
+            wop.add(dataLine.getEntropy(), 
+                    dataLine.getWorkRatio());
         }
         
         // Parabola curve fitter:

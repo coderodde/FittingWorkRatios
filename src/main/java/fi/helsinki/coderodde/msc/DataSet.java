@@ -1,10 +1,12 @@
 package fi.helsinki.coderodde.msc;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-class DataSet {
+class DataSet implements Iterable<DataLine> {
     
     private final List<DataLine> dataLines = new ArrayList<>();
     private final int fingers;
@@ -24,6 +26,22 @@ class DataSet {
         }
         
         return normalizedDataSet;
+    }
+    
+    DataSet pruneHalf() {
+        final DataSet prunedDataSet = new DataSet(fingers);
+        
+        boolean include = true;
+        
+        for (final DataLine dataLine : this) {
+            if (include) {
+                prunedDataSet.addDataLine(dataLine);
+            }
+            
+            include = !include;
+        }   
+        
+        return prunedDataSet;
     }
     
     void addDataLine(final DataLine dataLine) {
@@ -78,5 +96,10 @@ class DataSet {
         
         sb.append("\n");
         return sb.toString().replaceAll(",", "\\.");
+    }
+
+    @Override
+    public Iterator<DataLine> iterator() {
+        return Collections.unmodifiableList(dataLines).iterator();
     }
 }
