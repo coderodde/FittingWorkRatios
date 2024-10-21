@@ -1,14 +1,14 @@
 fi\helsinki\coderodde\msc\SimpleRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\SemiVerboseRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\SemiVerboseRunningTime.class
-fi\helsinki\coderodde\msc\VerboseRunningTime.class
 fi\helsinki\coderodde\msc\DataSet.class
 fi\helsinki\coderodde\msc\PartialRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\PartialRunningTime.class
 fi\helsinki\coderodde\msc\FittingCurve.class
 fi\helsinki\coderodde\msc\SimpleRunningTime.class
 fi\helsinki\coderodde\msc\DataLine.class
-fi\helsinki\coderodde\msc\VerboseRunningTimeStatisticsProducer.class
+fi\helsinki\coderodde\msc\VerbosePartialRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\RunningTime.class
+fi\helsinki\coderodde\msc\VerbosePartialRunningTime.class
 fi\helsinki\coderodde\msc\FittingWorkRatios.class
 fi\helsinki\coderodde\msc\DataSetsParser.class

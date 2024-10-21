@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-class VerboseRunningTimeStatisticsProducer {
+class VerbosePartialRunningTimeStatisticsProducer {
     
     void run(final List<DataSet> dataSetList) {
         System.out.println("<<< VerboseRunningTimeStatisticsProducer >>>");
@@ -32,7 +32,9 @@ class VerboseRunningTimeStatisticsProducer {
             double smallestDstRho = Double.NaN;
             
             for (double rho = 0.0; rho < 10.0; rho += 0.1) {
-                final RunningTime runningTime = new VerboseRunningTime(rho);
+                final RunningTime runningTime =
+                        new VerbosePartialRunningTime(rho);
+                
                 final DataSet normalizedDataSet = 
                         dataSet.normalize(runningTime);
                 
@@ -41,7 +43,7 @@ class VerboseRunningTimeStatisticsProducer {
                 
                 double mean = fittingCurve.mean();
                 double std  = fittingCurve.std();
-                double dist = fittingCurve.averageDistance(dataSet);
+                double dist = fittingCurve.averageDistance(normalizedDataSet);
 
                 if (abs(closestMean - 1.0) > abs(mean - 1.0)) {
                     closestMean = mean;

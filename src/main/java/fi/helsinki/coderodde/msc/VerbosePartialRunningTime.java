@@ -6,11 +6,11 @@ import static java.lang.Math.log;
 import static java.lang.Math.pow;
 import static java.lang.Math.PI;
 
-class VerboseRunningTime implements RunningTime {
+class VerbosePartialRunningTime implements RunningTime {
     
     private final double rho;
     
-    VerboseRunningTime(final double rho) {
+    VerbosePartialRunningTime(final double rho) {
         this.rho = rho;
     }
 

@@ -81,14 +81,4 @@ class FittingCurve {
                                 coefficients[0],
                                 dataSet.getNumberOfFingers());
     }
-    
-    private static double 
-        convertDataLineToWorkRatio(final DataLine dataLine, 
-                                   final RunningTime runningTime,
-                                   final int fingers) {
-            
-        final double work = dataLine.getWorkRatio();
-        final double entropy = dataLine.getEntropy();
-        return work / runningTime.estimate(entropy, fingers);
-    }
 }
