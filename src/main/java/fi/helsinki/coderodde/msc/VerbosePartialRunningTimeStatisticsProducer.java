@@ -9,7 +9,8 @@ import java.util.TreeMap;
 class VerbosePartialRunningTimeStatisticsProducer {
     
     void run(final List<DataSet> dataSetList) {
-        System.out.println("<<< VerboseRunningTimeStatisticsProducer >>>");
+        System.out.println(
+                "<<< VerbosePartialRunningTimeStatisticsProducer >>>");
         
         final List<DataStatisticsHolder> dataStatisticsHolderList = 
                 new ArrayList<>();
@@ -181,13 +182,6 @@ class VerbosePartialRunningTimeStatisticsProducer {
                               e.getValue().size(),
                               e.getValue());
         }
-
-        final RunningTime runningTime = new VerbosePartialRunningTime(3.1);
-//        final DataSet texDataSet = 
-//                dataSetList
-//                        .get(39)
-//                        .normalize(runningTime)
-//                        .pruneHalf();
         
         final int[] dataSetNumbers = { 20, 40, 60, 80, 100 };
         
@@ -196,6 +190,20 @@ class VerbosePartialRunningTimeStatisticsProducer {
                 getTableTeXCode(
                         dataSetNumbers, 
                         dataStatisticsHolderList));
+
+        final RunningTime runningTime = new VerbosePartialRunningTime(3.1);
+        final DataSet texDataSet = 
+                dataSetList
+                        .get(39)
+                        .normalize(runningTime);
+        
+        final FittingCurve fittingCurve = 
+                FittingCurve.inferFittingCurve(texDataSet);
+        
+        System.out.println("Data fitting curve: " + fittingCurve);
+        System.out.println("Data:");
+        System.out.println(texDataSet.pruneHalf());
+        
     }
     
     private static String getTableTeXCode(
