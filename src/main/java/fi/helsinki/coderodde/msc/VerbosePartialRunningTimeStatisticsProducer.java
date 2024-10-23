@@ -203,7 +203,6 @@ class VerbosePartialRunningTimeStatisticsProducer {
         System.out.println("Data fitting curve: " + fittingCurve);
         System.out.println("Data:");
         System.out.println(texDataSet.pruneHalf());
-        
     }
     
     private static String getTableTeXCode(

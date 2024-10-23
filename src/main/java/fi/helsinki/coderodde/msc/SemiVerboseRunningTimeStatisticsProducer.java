@@ -189,6 +189,19 @@ class SemiVerboseRunningTimeStatisticsProducer {
                 getTableTeXCode(
                         dataSetNumbers,
                         dataStatisticsHolderList));
+        
+        final RunningTime runningTime = new SemiVerboseRunningTime(0.7);
+        final DataSet texDataSet = 
+                dataSetList
+                        .get(99)
+                        .normalize(runningTime);
+        
+        final FittingCurve fittingCurve = 
+                FittingCurve.inferFittingCurve(texDataSet);
+        
+        System.out.println("Data fitting curve: " + fittingCurve);
+        System.out.println("Data:");
+        System.out.println(texDataSet.pruneHalf());
     }
     
     private static String getTableTeXCode(
