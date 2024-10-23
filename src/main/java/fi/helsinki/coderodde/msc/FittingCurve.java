@@ -17,21 +17,18 @@ class FittingCurve {
     private final double a;
     private final double b;
     private final double c;
-    private final int fingers;
     
     private FittingCurve(final double a,
                          final double b,
-                         final double c,
-                         final int fingers) {
+                         final double c) {
         this.a = a;
         this.b = b;
         this.c = c;
-        this.fingers = fingers;
     }
-    
-    @Override
+        @Override
     public String toString() {
-        return String.format("%f H^2 + (%f)H + (%f)", a, b, c);
+        return String.format("%f H^2 + (%f)H + (%f)", a, b, c)
+                     .replaceAll(",", ".");
     }
     
     double mean() {
@@ -78,7 +75,6 @@ class FittingCurve {
         
         return new FittingCurve(coefficients[2],
                                 coefficients[1],
-                                coefficients[0],
-                                dataSet.getNumberOfFingers());
+                                coefficients[0]);
     }
 }

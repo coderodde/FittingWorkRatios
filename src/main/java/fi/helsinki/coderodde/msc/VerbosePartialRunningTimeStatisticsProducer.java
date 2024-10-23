@@ -90,7 +90,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
             
             System.out.printf("Data set %3d:\n", dataSetNumber);
             
-            System.out.printf("Optimal fitting curve: %s\n",
+            System.out.printf("  Optimal fitting curve: %s\n",
                               optimalFittingCurve);
             
             System.out.printf("    Closest fitting curve mean = %f,\n", 
