@@ -208,4 +208,141 @@ class VerbosePartialRunningTimeStatisticsProducer {
         System.out.println("TeXdataSet:");
         System.out.println(texDataSet);
     }
+    
+    private static final class DataStatisticsHolder {
+
+        private static final char NL = '\n';
+        private static final String SEP = " & ";
+        
+        private final int dataSetNumber;
+        private final DataSet dataSet;
+        private final FittingCurve fittingCurve;
+        // Data set and fitting curve statistics may be asked
+        // from the fields above.
+        private final double fittingCurveMeanRho;
+        private final double fittingCurveStdRho;
+        private final double fittingCurveDistanceRho;
+        private final double dataSetMeanRho;
+        private final double dataSetStdRho;
+
+        public DataStatisticsHolder(final int dataSetNumber,
+                                    final DataSet dataSet,
+                                    final FittingCurve fittingCurve,
+                                    final double fittingCurveMeanRho,
+                                    final double fittingCurveStdRho,
+                                    final double fittingCurveDistanceRho,
+                                    final double dataSetMeanRho,
+                                    final double dataSetStdRho) {
+            this.dataSet = dataSet;
+            this.dataSetNumber = dataSetNumber;
+            this.fittingCurve = fittingCurve;
+            this.fittingCurveMeanRho = fittingCurveMeanRho;
+            this.fittingCurveStdRho = fittingCurveStdRho;
+            this.fittingCurveDistanceRho = fittingCurveDistanceRho;
+            this.dataSetMeanRho = dataSetMeanRho;
+            this.dataSetStdRho = dataSetStdRho;
+        }
+        
+        public DataSet getDataSet() {
+            return dataSet;
+        }
+
+        public int getDataSetNumber() {
+            return dataSetNumber;
+        }
+
+        public FittingCurve getFittingCurve() {
+            return fittingCurve;
+        }
+        
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("Data set ")
+              .append(dataSetNumber)
+              .append(NL);
+            
+            sb.append("  Optimal fitting curve: ")
+              .append(fittingCurve)
+              .append(NL);
+            
+            sb.append("    -----------------------------").append(NL);
+            sb.append("    Closest fitting curve mean = ")
+              .append(fittingCurve.mean())
+              .append(NL);
+            
+            sb.append("    Closest fitting curve mean rho = ")
+              .append(fittingCurveMeanRho)
+              .append(NL);
+            
+            sb.append("    -----------------------------").append(NL);
+            sb.append("    Closest fitting curve std = ")
+              .append(fittingCurve.std())
+              .append(NL);
+            
+            sb.append("    Closest fitting curve std rho = ")
+              .append(fittingCurveStdRho)
+              .append(NL);
+            
+            sb.append("    -----------------------------").append(NL);
+            sb.append("    Closest fitting curve distance = ")
+              .append(fittingCurve.averageDistance(dataSet))
+              .append(NL);
+            
+            sb.append("    Closest fitting curve dstance rho = ")
+              .append(fittingCurveDistanceRho)
+              .append(NL);
+            
+            sb.append("    -----------------------------").append(NL);
+            sb.append("    Closest data set mean = ")
+              .append(dataSet.mean())
+              .append(NL);
+            
+            sb.append("    Closest data set mean rho = ")
+              .append(dataSetMeanRho)
+              .append(NL);
+            
+            sb.append("    -----------------------------").append(NL);
+            sb.append("    Smallest data set std = ")
+              .append(dataSet.std())
+              .append(NL);
+            
+            sb.append("    Smallest data set std rho = ")
+              .append(dataSetStdRho)
+              .append(NL);
+            
+            return sb.toString();
+        }
+        
+        String convertToTeXTableLine() {
+            final StringBuilder sb = new StringBuilder();
+            
+            sb.append(dataSetNumber)
+              .append(SEP)
+              .append(String.format("%.4f", fittingCurve.mean()))
+              .append(SEP)
+              .append(String.format("%.2f", fittingCurveMeanRho))
+              .append(SEP)
+              .append(String.format("%.4f", fittingCurve.std()))
+              .append(SEP)
+              .append(String.format("%.2f", fittingCurveStdRho))
+              .append(SEP)
+              .append(String.format(
+                      "%.4f", 
+                      fittingCurve.averageDistance(dataSet)))
+              .append(SEP)
+              .append(String.format("%.2f", fittingCurveDistanceRho))
+              .append(SEP)
+              .append(String.format("%.4f", dataSet.mean()))
+              .append(SEP)
+              .append(String.format("%.2f", dataSetMeanRho))
+              .append(SEP)
+              .append(String.format("%.4f", dataSet.std()))
+              .append(SEP)
+              .append(String.format("%.2f", dataSetStdRho))
+              .append(" \\\\");
+            
+            return sb.toString();
+        }
+    }
 }
