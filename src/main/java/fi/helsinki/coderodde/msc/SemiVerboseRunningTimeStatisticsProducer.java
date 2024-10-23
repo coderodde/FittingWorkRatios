@@ -44,6 +44,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
             double dataSetSmallestStdGamma      = Double.NaN;
             
             FittingCurve optimalFittingCurve = null;
+            DataSet optimalDataSet = null;
             
             for (double gamma = 0.0; gamma < 1.0; gamma += 0.01) {
                 final RunningTime runningTime = 
@@ -82,6 +83,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
                 if (abs(dataSetClosestMean - 1.0) > abs(dataSetMean - 1.0)) {
                     dataSetClosestMean = dataSetMean;
                     dataSetClosestMeanGamma = gamma;
+                    optimalDataSet = normalizedDataSet;
                     optimalFittingCurve = fittingCurve;
                 }
                 
@@ -93,8 +95,8 @@ class SemiVerboseRunningTimeStatisticsProducer {
             
             final DataStatisticsHolder holder = 
                     new DataStatisticsHolder(
-                            dataSet, 
                             dataSetNumber, 
+                            optimalDataSet, 
                             optimalFittingCurve, 
                             fittingCurveClosestMeanGamma, 
                             fittingCurveSmallestStdGamma,
@@ -104,40 +106,6 @@ class SemiVerboseRunningTimeStatisticsProducer {
             
             dataStatisticsHolderList.add(holder);
             System.out.println(holder);
-            
-//            System.out.printf("Data set %3d:\n", dataSetNumber);
-//            
-//            System.out.printf("  Optimal fitting curve: %s\n",
-//                              optimalFittingCurve);
-//            
-//            System.out.printf("    Closest fitting curve mean = %f,\n", 
-//                             fittingCurveClosestMean);
-//            System.out.printf("    Closest fitting curve mean gamma = %f,\n", 
-//                              fittingCurveClosestMeanGamma);
-//            
-//            System.out.printf("    Smallest fitting curve std = %f,\n",
-//                             fittingCurveSmallestStd);
-//            
-//            System.out.printf("    Smallest fitting curve std gamma = %f,\n", 
-//                              fittingCurveSmallestStdGamma);
-//            
-//            System.out.printf("    Smallest fitting curve distance = %f,\n", 
-//                              fittingCurveSmallestDst);
-//            
-//            System.out.printf("    Smallest fitting curve distance gamma = %f,\n\n", 
-//                              fittingCurveSmallestDstGamma);
-//            
-//            System.out.printf("    Closest data set mean: %f,\n", 
-//                              dataSetClosestMean);
-//            
-//            System.out.printf("    Closest data set mean gamma = %f,\n",
-//                              dataSetClosestMeanGamma);
-//            
-//            System.out.printf("    Smallest data set std: %f,\n", 
-//                              dataSetSmallestStd);
-//            
-//            System.out.printf("    Smallest data set std gamma = %f,\n\n",
-//                              dataSetSmallestStdGamma);
             
             fittingCurveMeanMap.get(fittingCurveClosestMeanGamma)
                                .add(dataSetNumber);
@@ -160,7 +128,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e : 
                 fittingCurveMeanMap.entrySet()) {
             
-            System.out.printf("    gamma = %f, indices[%d] = %s\n", 
+            System.out.printf("    gamma = %.2f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -172,7 +140,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e : 
                 fittingCurveStdMap.entrySet()) {
             
-            System.out.printf("    gamma = %f, indices[%d] = %s\n", 
+            System.out.printf("    gamma = %.2f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -184,7 +152,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e : 
                 fittingCurveDistMap.entrySet()) {
             
-            System.out.printf("    gamma = %f, indices[%d] = %s\n", 
+            System.out.printf("    gamma = %.2f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -196,7 +164,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e :
                 dataSetMeanMap.entrySet()) {
             
-            System.out.printf("    gamma = %f, indices[%d] = %s\n", 
+            System.out.printf("    gamma = %.2f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -208,16 +176,25 @@ class SemiVerboseRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e :
                 dataSetStdMap.entrySet()) {
             
-            System.out.printf("    gamma = %f, indices[%d] = %s\n", 
+            System.out.printf("    gamma = %.2f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
         }
+        
+        final int[] dataSetNumbers = { 20, 40, 60, 80, 100 };
+        
+        System.out.println("TeX table:");
+        System.out.println(
+                getTableTeXCode(
+                        dataSetNumbers,
+                        dataStatisticsHolderList));
     }
     
     private static String getTableTeXCode(
             final int[] dataSetNumbers,
             final List<DataStatisticsHolder> dataSetStatisticHolderList) {
+        
         final StringBuilder sb = new StringBuilder();
        
         for (final int dataSetNumber : dataSetNumbers) {
@@ -225,7 +202,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
             final DataStatisticsHolder holder = 
                     dataSetStatisticHolderList.get(dataSetIndex);
             
-            sb.append(holder).append("\n");
+            sb.append(holder.convertToTeXTableLine()).append("\n");
         }
         
         return sb.toString();
@@ -236,8 +213,8 @@ class SemiVerboseRunningTimeStatisticsProducer {
         private static final char NL = '\n';
         private static final String SEP = " & ";
         
-        private final DataSet dataSet;
         private final int dataSetNumber;
+        private final DataSet dataSet;
         private final FittingCurve fittingCurve;
         // Data set and fitting curve statistics may be asked
         // from the fields above.
@@ -247,8 +224,8 @@ class SemiVerboseRunningTimeStatisticsProducer {
         private final double dataSetMeanGamma;
         private final double dataSetStdGamma;
 
-        public DataStatisticsHolder(final DataSet dataSet,
-                                    final int dataSetNumber,
+        public DataStatisticsHolder(final int dataSetNumber,
+                                    final DataSet dataSet,
                                     final FittingCurve fittingCurve,
                                     final double fittingCurveMeanGamma,
                                     final double fittingCurveStdGamma,
@@ -288,6 +265,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(fittingCurve)
               .append(NL);
             
+            sb.append("    -----------------------------").append(NL);
             sb.append("    Closest fitting curve mean = ")
               .append(fittingCurve.mean())
               .append(NL);
@@ -296,6 +274,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(fittingCurveMeanGamma)
               .append(NL);
             
+            sb.append("    -----------------------------").append(NL);
             sb.append("    Closest fitting curve std = ")
               .append(fittingCurve.std())
               .append(NL);
@@ -304,6 +283,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(fittingCurveStdGamma)
               .append(NL);
             
+            sb.append("    -----------------------------").append(NL);
             sb.append("    Closest fitting curve distance = ")
               .append(fittingCurve.averageDistance(dataSet))
               .append(NL);
@@ -312,6 +292,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(fittingCurveDistanceGamma)
               .append(NL);
             
+            sb.append("    -----------------------------").append(NL);
             sb.append("    Closest data set mean = ")
               .append(dataSet.mean())
               .append(NL);
@@ -320,6 +301,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(dataSetMeanGamma)
               .append(NL);
             
+            sb.append("    -----------------------------").append(NL);
             sb.append("    Smallest data set std = ")
               .append(dataSet.std())
               .append(NL);
@@ -336,23 +318,25 @@ class SemiVerboseRunningTimeStatisticsProducer {
             
             sb.append(dataSetNumber)
               .append(SEP)
-              .append(fittingCurve.mean())
+              .append(String.format("%.4f", fittingCurve.mean()))
               .append(SEP)
               .append(String.format("%.2f", fittingCurveMeanGamma))
               .append(SEP)
-              .append(fittingCurve.std())
+              .append(String.format("%.4f", fittingCurve.std()))
               .append(SEP)
               .append(String.format("%.2f", fittingCurveStdGamma))
               .append(SEP)
-              .append(fittingCurve.averageDistance(dataSet))
+              .append(String.format(
+                      "%.4f", 
+                      fittingCurve.averageDistance(dataSet)))
               .append(SEP)
               .append(String.format("%.2f", fittingCurveDistanceGamma))
               .append(SEP)
-              .append(dataSet.mean())
+              .append(String.format("%.4f", dataSet.mean()))
               .append(SEP)
               .append(String.format("%.2f", dataSetMeanGamma))
               .append(SEP)
-              .append(dataSet.std())
+              .append(String.format("%.4f", dataSet.std()))
               .append(SEP)
               .append(String.format("%.2f", dataSetStdGamma))
               .append(" \\\\");
@@ -360,5 +344,4 @@ class SemiVerboseRunningTimeStatisticsProducer {
             return sb.toString();
         }
     }
-    
 }
