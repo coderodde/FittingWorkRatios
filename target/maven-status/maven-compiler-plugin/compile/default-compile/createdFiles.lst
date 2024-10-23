@@ -5,6 +5,7 @@ fi\helsinki\coderodde\msc\DataSet.class
 fi\helsinki\coderodde\msc\SemiVerboseRunningTimeStatisticsProducer$DataStatisticsHolder.class
 fi\helsinki\coderodde\msc\PartialRunningTimeStatisticsProducer.class
 fi\helsinki\coderodde\msc\PartialRunningTime.class
+fi\helsinki\coderodde\msc\VerbosePartialRunningTimeStatisticsProducer$DataStatisticsHolder.class
 fi\helsinki\coderodde\msc\FittingCurve.class
 fi\helsinki\coderodde\msc\SimpleRunningTime.class
 fi\helsinki\coderodde\msc\DataLine.class

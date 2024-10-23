@@ -271,7 +271,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest fitting curve mean gamma = ")
-              .append(fittingCurveMeanGamma)
+              .append(String.format("%.2f", fittingCurveMeanGamma))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -280,7 +280,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest fitting curve std gamma = ")
-              .append(fittingCurveStdGamma)
+              .append(String.format("%.2f", fittingCurveStdGamma))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -289,7 +289,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest fitting curve dstance gamma = ")
-              .append(fittingCurveDistanceGamma)
+              .append(String.format("%.2f", fittingCurveDistanceGamma))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -298,7 +298,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest data set mean gamma = ")
-              .append(dataSetMeanGamma)
+              .append(String.format("%.2f", dataSetMeanGamma))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -307,10 +307,10 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Smallest data set std gamma = ")
-              .append(dataSetStdGamma)
+              .append(String.format("%.2f", dataSetStdGamma))
               .append(NL);
             
-            return sb.toString();
+            return sb.toString().replace(',', '.');
         }
         
         String convertToTeXTableLine() {
@@ -341,7 +341,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
               .append(String.format("%.2f", dataSetStdGamma))
               .append(" \\\\");
             
-            return sb.toString();
+            return sb.toString().replace(',', '.');
         }
     }
 }

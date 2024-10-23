@@ -11,6 +11,9 @@ class VerbosePartialRunningTimeStatisticsProducer {
     void run(final List<DataSet> dataSetList) {
         System.out.println("<<< VerboseRunningTimeStatisticsProducer >>>");
         
+        final List<DataStatisticsHolder> dataStatisticsHolderList = 
+                new ArrayList<>();
+        
         int dataSetNumber = 1;
         final Map<Double, List<Integer>> fittingCurveMeanMap = new TreeMap<>();
         final Map<Double, List<Integer>> fittingCurveStdMap  = new TreeMap<>();
@@ -41,6 +44,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
             double dataSetSmallestStdRho      = Double.NaN;
             
             FittingCurve optimalFittingCurve = null;
+            DataSet optimalDataSet = null;
             
             for (double rho = 0.0; rho < 10.0; rho += 0.1) {
                 final RunningTime runningTime =
@@ -79,6 +83,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
                 if (abs(dataSetClosestMean - 1.0) > abs(dataSetMean - 1.0)) {
                     dataSetClosestMean = dataSetMean;
                     dataSetClosestMeanRho = rho;
+                    optimalDataSet = normalizedDataSet;
                     optimalFittingCurve = fittingCurve;
                 }
                 
@@ -88,39 +93,19 @@ class VerbosePartialRunningTimeStatisticsProducer {
                 }
             }
             
-            System.out.printf("Data set %3d:\n", dataSetNumber);
+            final DataStatisticsHolder holder = 
+                    new DataStatisticsHolder(
+                            dataSetNumber, 
+                            optimalDataSet, 
+                            optimalFittingCurve, 
+                            fittingCurveClosestMeanRho, 
+                            fittingCurveSmallestStdRho,
+                            fittingCurveSmallestDstRho, 
+                            dataSetClosestMeanRho, 
+                            dataSetSmallestStdRho);
             
-            System.out.printf("  Optimal fitting curve: %s\n",
-                              optimalFittingCurve);
-            
-            System.out.printf("    Closest fitting curve mean = %f,\n", 
-                             fittingCurveClosestMean);
-            System.out.printf("    Closest fitting curve mean rho = %f,\n", 
-                              fittingCurveClosestMeanRho);
-            
-            System.out.printf("    Smallest fitting curve std = %f,\n",
-                             fittingCurveSmallestStd);
-            
-            System.out.printf("    Smallest fitting curve std rho = %f,\n", 
-                              fittingCurveSmallestStdRho);
-            
-            System.out.printf("    Smallest fitting curve distance = %f,\n", 
-                              fittingCurveSmallestDst);
-            
-            System.out.printf("    Smallest fitting curve distance rho = %f,\n\n", 
-                              fittingCurveSmallestDstRho);
-            
-            System.out.printf("    Closest data set mean: %f,\n", 
-                              dataSetClosestMean);
-            
-            System.out.printf("    Closest data set mean rho = %f,\n",
-                              dataSetClosestMeanRho);
-            
-            System.out.printf("    Smallest data set std: %f,\n", 
-                              dataSetSmallestStd);
-            
-            System.out.printf("    Smallest data set std rho = %f,\n\n",
-                              dataSetSmallestStdRho);
+            dataStatisticsHolderList.add(holder);
+            System.out.println(holder);
             
             fittingCurveMeanMap.get(fittingCurveClosestMeanRho)
                                .add(dataSetNumber);
@@ -198,17 +183,37 @@ class VerbosePartialRunningTimeStatisticsProducer {
         }
 
         final RunningTime runningTime = new VerbosePartialRunningTime(3.1);
-        final DataSet texDataSet = 
-                dataSetList
-                        .get(39)
-                        .normalize(runningTime)
-                        .pruneHalf();
+//        final DataSet texDataSet = 
+//                dataSetList
+//                        .get(39)
+//                        .normalize(runningTime)
+//                        .pruneHalf();
         
-        System.out.println();
-        System.out.println("TeXdataSet:");
-        System.out.println(texDataSet);
+        final int[] dataSetNumbers = { 20, 40, 60, 80, 100 };
+        
+        System.out.println("TeX table:");
+        System.out.println(
+                getTableTeXCode(
+                        dataSetNumbers, 
+                        dataStatisticsHolderList));
     }
     
+    private static String getTableTeXCode(
+            final int[] dataSetNumbers,
+            final List<DataStatisticsHolder> dataSetStatisticHolderList) {
+        
+        final StringBuilder sb = new StringBuilder();
+       
+        for (final int dataSetNumber : dataSetNumbers) {
+            final int dataSetIndex = dataSetNumber - 1;
+            final DataStatisticsHolder holder = 
+                    dataSetStatisticHolderList.get(dataSetIndex);
+            
+            sb.append(holder.convertToTeXTableLine()).append("\n");
+        }
+        
+        return sb.toString();
+    }
     private static final class DataStatisticsHolder {
 
         private static final char NL = '\n';
@@ -272,7 +277,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest fitting curve mean rho = ")
-              .append(fittingCurveMeanRho)
+              .append(String.format("%.1f", fittingCurveMeanRho))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -281,7 +286,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest fitting curve std rho = ")
-              .append(fittingCurveStdRho)
+              .append(String.format("%.1f", fittingCurveStdRho))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -290,7 +295,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest fitting curve dstance rho = ")
-              .append(fittingCurveDistanceRho)
+              .append(String.format("%.1f", fittingCurveDistanceRho))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -299,7 +304,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Closest data set mean rho = ")
-              .append(dataSetMeanRho)
+              .append(String.format("%.1f", dataSetMeanRho))
               .append(NL);
             
             sb.append("    -----------------------------").append(NL);
@@ -308,10 +313,10 @@ class VerbosePartialRunningTimeStatisticsProducer {
               .append(NL);
             
             sb.append("    Smallest data set std rho = ")
-              .append(dataSetStdRho)
+              .append(String.format("%.1f", dataSetStdRho))
               .append(NL);
             
-            return sb.toString();
+            return sb.toString().replace(',', '.');
         }
         
         String convertToTeXTableLine() {
@@ -321,28 +326,28 @@ class VerbosePartialRunningTimeStatisticsProducer {
               .append(SEP)
               .append(String.format("%.4f", fittingCurve.mean()))
               .append(SEP)
-              .append(String.format("%.2f", fittingCurveMeanRho))
+              .append(String.format("%.1f", fittingCurveMeanRho))
               .append(SEP)
               .append(String.format("%.4f", fittingCurve.std()))
               .append(SEP)
-              .append(String.format("%.2f", fittingCurveStdRho))
+              .append(String.format("%.1f", fittingCurveStdRho))
               .append(SEP)
               .append(String.format(
                       "%.4f", 
                       fittingCurve.averageDistance(dataSet)))
               .append(SEP)
-              .append(String.format("%.2f", fittingCurveDistanceRho))
+              .append(String.format("%.1f", fittingCurveDistanceRho))
               .append(SEP)
               .append(String.format("%.4f", dataSet.mean()))
               .append(SEP)
-              .append(String.format("%.2f", dataSetMeanRho))
+              .append(String.format("%.1f", dataSetMeanRho))
               .append(SEP)
               .append(String.format("%.4f", dataSet.std()))
               .append(SEP)
-              .append(String.format("%.2f", dataSetStdRho))
+              .append(String.format("%.1f", dataSetStdRho))
               .append(" \\\\");
             
-            return sb.toString();
+            return sb.toString().replace(',', '.');
         }
     }
 }
