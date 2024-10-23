@@ -40,6 +40,8 @@ class VerbosePartialRunningTimeStatisticsProducer {
             double dataSetClosestMeanRho      = Double.NaN;
             double dataSetSmallestStdRho      = Double.NaN;
             
+            FittingCurve optimalFittingCurve = null;
+            
             for (double rho = 0.0; rho < 10.0; rho += 0.1) {
                 final RunningTime runningTime =
                         new VerbosePartialRunningTime(rho);
@@ -77,6 +79,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
                 if (abs(dataSetClosestMean - 1.0) > abs(dataSetMean - 1.0)) {
                     dataSetClosestMean = dataSetMean;
                     dataSetClosestMeanRho = rho;
+                    optimalFittingCurve = fittingCurve;
                 }
                 
                 if (dataSetSmallestStd > dataSetStd) {
@@ -86,6 +89,9 @@ class VerbosePartialRunningTimeStatisticsProducer {
             }
             
             System.out.printf("Data set %3d:\n", dataSetNumber);
+            
+            System.out.printf("Optimal fitting curve: %s\n",
+                              optimalFittingCurve);
             
             System.out.printf("    Closest fitting curve mean = %f,\n", 
                              fittingCurveClosestMean);
@@ -190,7 +196,16 @@ class VerbosePartialRunningTimeStatisticsProducer {
                               e.getValue().size(),
                               e.getValue());
         }
+
+        final RunningTime runningTime = new VerbosePartialRunningTime(3.1);
+        final DataSet texDataSet = 
+                dataSetList
+                        .get(39)
+                        .normalize(runningTime)
+                        .pruneHalf();
         
-        System.out.printf("Yeah\n%s\n", dataSetList.get(19).normalize(new VerbosePartialRunningTime(3.0)).pruneHalf());
+        System.out.println();
+        System.out.println("TeXdataSet:");
+        System.out.println(texDataSet);
     }
 }
