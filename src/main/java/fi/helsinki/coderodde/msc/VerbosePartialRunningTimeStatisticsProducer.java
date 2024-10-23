@@ -84,6 +84,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
                     dataSetSmallestStdRho = rho;
                 }
             }
+            
             System.out.printf("Data set %3d:\n", dataSetNumber);
             
             System.out.printf("    Closest fitting curve mean = %f,\n", 
@@ -189,5 +190,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
                               e.getValue().size(),
                               e.getValue());
         }
+        
+        System.out.printf("Yeah\n%s\n", dataSetList.get(19).normalize(new VerbosePartialRunningTime(3.0)).pruneHalf());
     }
 }
