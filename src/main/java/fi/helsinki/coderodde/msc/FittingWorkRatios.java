@@ -32,6 +32,11 @@ public class FittingWorkRatios {
             return;
         }
         
+        if (commandLine.hasOption("h")) {
+            printHelp(options);
+            return;
+        }
+        
         if (!commandLine.hasOption("s")  &&
             !commandLine.hasOption("p")  &&
             !commandLine.hasOption("vp") &&
@@ -123,7 +128,7 @@ public class FittingWorkRatios {
                 Option.builder()
                       .option("h")
                       .longOpt("help")
-                      .desc("print the heelp message")
+                      .desc("print this help message")
                       .required(false)
                       .build();
         
