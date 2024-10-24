@@ -1,12 +1,13 @@
 package fi.helsinki.coderodde.msc;
 
+import java.io.PrintWriter;
 import java.util.List;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 
 /**
  * This program is used for fitting with parabola the work ratio plots.
@@ -19,45 +20,25 @@ public class FittingWorkRatios {
     private static final int NUMBER_OF_FINGERS = 100;
 
     public static void main(String[] args) {
-        final Options options = new Options();
-        
-        options.addOption("d", "data-file", true, "The data file to work on");
-        
-        options.addOption("s",
-                          "simple",
-                          false,
-                          "Run simple running time simulation");
-        
-        options.addOption("p",
-                          "partial", 
-                          false, 
-                          "Run partial running time simulation");
-        
-        options.addOption("vp", "verbose-partial", 
-                          false, 
-                          "Run verbose partial running time simulation");
-        
-        options.addOption("sv",
-                          "semiverbose",
-                          false, 
-                          "Run semi-verbose running time simulation");
-        
-        final CommandLineParser parser = new GnuParser();
+        final Options options = createOptions();
+        final CommandLineParser parser = new DefaultParser();
         final CommandLine commandLine;
-        
+        printHelp(options);
+        System.exit(0);
         try {
             commandLine = parser.parse(options, args);
-        } catch (ParseException ex) {
-            final HelpFormatter helpFormatter = new HelpFormatter();
-            helpFormatter.printHelp("java -jar FittingWorkRatios.jar", options);
+        } catch (Exception ex) {
+            printHelp(options);
             return;
         }
         
-        if (!commandLine.hasOption("d")) {
-            System.err.println(
-                    "--data option with an argument file name is mandatory.");
+        if (!commandLine.hasOption("s")  &&
+            !commandLine.hasOption("p")  &&
+            !commandLine.hasOption("vp") &&
+            !commandLine.hasOption("sv")) {
             return;
         }
+        
         
         final String fileName = commandLine.getOptionValue("d");
         final DataSetsParser dataSetsParser = 
@@ -81,5 +62,85 @@ public class FittingWorkRatios {
         if (commandLine.hasOption("sv")) {
             new SemiVerboseRunningTimeStatisticsProducer().run(dataSets);
         }
+    }
+    
+    private static Options createOptions() {
+        final Options options = new Options();
+        
+        final Option optionDataFile =
+                Option.builder()
+                      .option("d")
+                      .desc("specifies the data file")
+                      .hasArg(true)
+                      .argName("FILE")
+                      .longOpt("data-file")
+                      .required()
+                      .build();
+        
+        options.addOption(optionDataFile);
+        
+        final Option optionPartial = 
+                Option.builder()
+                      .option("p")
+                      .longOpt("partial")
+                      .desc("run partial running time simulation")
+                      .required(false)
+                      .build();
+        
+        options.addOption(optionPartial);
+        
+        final Option optionSimple = 
+                Option.builder()
+                      .option("s")
+                      .longOpt("simple")
+                      .desc("run simple running time simulation")
+                      .required(false)
+                      .build();
+        
+        options.addOption(optionSimple);
+        
+        final Option optionVerbosePartial = 
+                Option.builder()
+                      .option("vp")
+                      .longOpt("verbose-partial")
+                      .desc("run verbose-partial running time simulation")
+                      .required(false)
+                      .build();
+        
+        options.addOption(optionVerbosePartial);
+        
+        final Option optionSemiVerbose = 
+                Option.builder()
+                      .option("sv")
+                      .longOpt("semi-verbose")
+                      .desc("run semi-verbose running time simulation")
+                      .required(false)
+                      .build();
+        
+        options.addOption(optionSemiVerbose);
+        
+        final Option optionHelp = 
+                Option.builder()
+                      .option("h")
+                      .longOpt("help")
+                      .desc("print the heelp message")
+                      .required(false)
+                      .build();
+        
+        options.addOption(optionHelp);
+        
+        return options;
+    }
+    
+    private static void printHelp(final Options options) {
+        final HelpFormatter helpFormatter = new HelpFormatter();
+        final PrintWriter printWriter = new PrintWriter(System.out);
+        helpFormatter.printUsage(printWriter, 
+                                 80,
+                                 "java -jar FittingWorkRatios.jar",
+                                 options);  
+        
+        helpFormatter.printOptions(printWriter, 80, options, 4, 2);
+        printWriter.flush();
     }
 }

@@ -11,7 +11,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
     void run(final List<DataSet> dataSetList) {
         System.out.println("<<< SemiVerboseRunningTimeStatisticsProducer >>>");
         
-        final List<DataStatisticsHolder> dataStatisticsHolderList = 
+        final List<DataSetStatisticsHolder> dataStatisticsHolderList = 
                 new ArrayList<>();
         
         int dataSetNumber = 1;
@@ -93,8 +93,8 @@ class SemiVerboseRunningTimeStatisticsProducer {
                 }
             }
             
-            final DataStatisticsHolder holder = 
-                    new DataStatisticsHolder(
+            final DataSetStatisticsHolder holder = 
+                    new DataSetStatisticsHolder(
                             dataSetNumber, 
                             optimalDataSet, 
                             optimalFittingCurve, 
@@ -206,13 +206,13 @@ class SemiVerboseRunningTimeStatisticsProducer {
     
     private static String getTableTeXCode(
             final int[] dataSetNumbers,
-            final List<DataStatisticsHolder> dataSetStatisticHolderList) {
+            final List<DataSetStatisticsHolder> dataSetStatisticHolderList) {
         
         final StringBuilder sb = new StringBuilder();
        
         for (final int dataSetNumber : dataSetNumbers) {
             final int dataSetIndex = dataSetNumber - 1;
-            final DataStatisticsHolder holder = 
+            final DataSetStatisticsHolder holder = 
                     dataSetStatisticHolderList.get(dataSetIndex);
             
             sb.append(holder.convertToTeXTableLine()).append("\n");
@@ -221,7 +221,7 @@ class SemiVerboseRunningTimeStatisticsProducer {
         return sb.toString();
     }
     
-    private static final class DataStatisticsHolder {
+    private static final class DataSetStatisticsHolder {
 
         private static final char NL = '\n';
         private static final String SEP = " & ";
@@ -237,14 +237,14 @@ class SemiVerboseRunningTimeStatisticsProducer {
         private final double dataSetMeanGamma;
         private final double dataSetStdGamma;
 
-        public DataStatisticsHolder(final int dataSetNumber,
-                                    final DataSet dataSet,
-                                    final FittingCurve fittingCurve,
-                                    final double fittingCurveMeanGamma,
-                                    final double fittingCurveStdGamma,
-                                    final double fittingCurveDistanceGamma,
-                                    final double dataSetMeanGamma,
-                                    final double dataSetStdGamma) {
+        public DataSetStatisticsHolder(final int dataSetNumber,
+                                       final DataSet dataSet,
+                                       final FittingCurve fittingCurve,
+                                       final double fittingCurveMeanGamma,
+                                       final double fittingCurveStdGamma,
+                                       final double fittingCurveDistanceGamma,
+                                       final double dataSetMeanGamma,
+                                       final double dataSetStdGamma) {
             this.dataSet = dataSet;
             this.dataSetNumber = dataSetNumber;
             this.fittingCurve = fittingCurve;
