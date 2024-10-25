@@ -50,6 +50,9 @@ class DataSetsParser {
             } else if (line.startsWith("# Iteration")) {
                 currentDataSet = new DataSet(fingers);
                 dataSets.add(currentDataSet);
+            } else if (line.startsWith("#")) {
+                // Omit other comments:
+                continue;
             } else {
                 final String[] tokens = line.split("\\s+");
                 final double entropy = Double.parseDouble(tokens[0]);

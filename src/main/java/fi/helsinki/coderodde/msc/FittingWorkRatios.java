@@ -23,8 +23,7 @@ public class FittingWorkRatios {
         final Options options = createOptions();
         final CommandLineParser parser = new DefaultParser();
         final CommandLine commandLine;
-        printHelp(options);
-        System.exit(0);
+        
         try {
             commandLine = parser.parse(options, args);
         } catch (Exception ex) {
@@ -43,7 +42,6 @@ public class FittingWorkRatios {
             !commandLine.hasOption("sv")) {
             return;
         }
-        
         
         final String fileName = commandLine.getOptionValue("d");
         final DataSetsParser dataSetsParser = 

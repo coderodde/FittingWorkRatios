@@ -185,6 +185,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
         
         final int[] dataSetNumbers = { 20, 40, 60, 80, 100 };
         
+        System.out.println();
         System.out.println("TeX table:");
         System.out.println(
                 getTableTeXCode(
