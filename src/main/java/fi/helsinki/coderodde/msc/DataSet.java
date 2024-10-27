@@ -8,15 +8,23 @@ import java.util.Objects;
 
 class DataSet implements Iterable<DataLine> {
     
+    private final int dataSetNumber;
     private final List<DataLine> dataLines = new ArrayList<>();
     private final int fingers;
     
-    DataSet(final int fingers) {
+    DataSet(final int dataSetNumber,
+            final int fingers) {
+        this.dataSetNumber = dataSetNumber;
         this.fingers = fingers;
     }
     
+    int getDataSetNumber() {
+        return dataSetNumber;
+    }
+    
     DataSet normalize(final RunningTime runningTime) {
-        final DataSet normalizedDataSet = new DataSet(fingers);
+        final DataSet normalizedDataSet = new DataSet(dataSetNumber, 
+                                                      fingers);
         
         for (final DataLine dataLine : dataLines) {
             normalizedDataSet.addDataLine(
@@ -29,7 +37,7 @@ class DataSet implements Iterable<DataLine> {
     }
     
     DataSet pruneHalf() {
-        final DataSet prunedDataSet = new DataSet(fingers);
+        final DataSet prunedDataSet = new DataSet(dataSetNumber, fingers);
         
         boolean include = true;
         

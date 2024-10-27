@@ -194,8 +194,10 @@ class SemiVerboseRunningTimeStatisticsProducer {
         final RunningTime runningTime = new SemiVerboseRunningTime(0.7);
         final DataSet texDataSet = 
                 dataSetList
-                        .get(99)
+                        .get(39)
                         .normalize(runningTime);
+        
+        System.out.println("Data set chosen: " + texDataSet.getDataSetNumber());
         
         final FittingCurve fittingCurve = 
                 FittingCurve.inferFittingCurve(texDataSet);

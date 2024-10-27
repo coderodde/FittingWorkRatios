@@ -37,6 +37,7 @@ class DataSetsParser {
     private List<DataSet> parseImpl(final List<String> lines) {
         final List<DataSet> dataSets = new ArrayList<>();
         DataSet currentDataSet = null;
+        int dataSetNumber = 1;
         
         for (int i = 0; i < lines.size(); i++) {
             final String line = lines.get(i).trim();
@@ -48,8 +49,9 @@ class DataSetsParser {
                 // Omit blank line:
                 continue;
             } else if (line.startsWith("# Iteration")) {
-                currentDataSet = new DataSet(fingers);
+                currentDataSet = new DataSet(dataSetNumber, fingers);
                 dataSets.add(currentDataSet);
+                dataSetNumber++;
             } else if (line.startsWith("#")) {
                 // Omit other comments:
                 continue;

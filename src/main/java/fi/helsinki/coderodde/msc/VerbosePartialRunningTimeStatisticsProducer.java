@@ -129,7 +129,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e : 
                 fittingCurveMeanMap.entrySet()) {
             
-            System.out.printf("    rho = %f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %.1f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -141,7 +141,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e : 
                 fittingCurveStdMap.entrySet()) {
             
-            System.out.printf("    rho = %f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %.1f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -153,7 +153,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e : 
                 fittingCurveDistMap.entrySet()) {
             
-            System.out.printf("    rho = %f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %.1f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -165,7 +165,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e :
                 dataSetMeanMap.entrySet()) {
             
-            System.out.printf("    rho = %f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %.1f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -177,7 +177,7 @@ class VerbosePartialRunningTimeStatisticsProducer {
         for (final Map.Entry<Double, List<Integer>> e :
                 dataSetStdMap.entrySet()) {
             
-            System.out.printf("    rho = %f, indices[%d] = %s\n", 
+            System.out.printf("    rho = %.1f, indices[%d] = %s\n", 
                               e.getKey(), 
                               e.getValue().size(),
                               e.getValue());
@@ -197,6 +197,8 @@ class VerbosePartialRunningTimeStatisticsProducer {
                 dataSetList
                         .get(39)
                         .normalize(runningTime);
+        
+        System.out.println("Data set chosen: " + texDataSet.getDataSetNumber());
         
         final FittingCurve fittingCurve = 
                 FittingCurve.inferFittingCurve(texDataSet);
